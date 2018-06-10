@@ -43,18 +43,20 @@ lb = pickle.loads(open(args["labelbin"], "rb").read())
 print("[INFO] classifying image...")
 proba = model.predict(image)[0]
 idx = np.argmax(proba)
-label = lb.classes_[idx]
+label = (lb.classes_[idx]).decode('UTF-8')
+
 
 
 # we'll mark our prediction as "correct" of the input image filename
 # contains the predicted label text (obviously this makes the
 # assumption that you have named your testing image files this way)
 filename = args["image"][args["image"].rfind(os.path.sep) + 1:]
+print("Label:" , label)
 correct = "correct" if filename.rfind(label) != -1 else "incorrect"
  
 # build the label and draw the label on the image
 label = "{}: {:.2f}% ({})".format(label, proba[idx] * 100, correct)
-output = imutils.resize(output, width=400)
+output = imutils.resize(output, width=800)
 cv2.putText(output, label, (10, 25),  cv2.FONT_HERSHEY_SIMPLEX,
 	0.7, (0, 255, 0), 2)
  
